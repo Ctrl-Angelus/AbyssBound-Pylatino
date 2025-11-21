@@ -1,0 +1,12 @@
+### VS Code ###
+.vscode/
+
+### Intellij ###
+.idea/
+
+### Python ###
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
