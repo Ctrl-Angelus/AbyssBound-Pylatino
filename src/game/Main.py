@@ -5,24 +5,15 @@ from Entidades import Jugador
 from Parametros import *
 
 
-DIMENSIONES_DEL_LIENZO = list()
-
-
 def main():
     pygame.init()
-
-    informacion = pygame.display.Info()
-    alto = informacion.current_h * 0.9
-    ancho = alto
-    DIMENSIONES_DEL_LIENZO.append(ancho)
-    DIMENSIONES_DEL_LIENZO.append(alto)
 
     pygame.display.set_caption(TITULO)
 
     escena = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)
     tiempo = pygame.time.Clock()
 
-    jugador = Jugador(Rect(0, 0, TAMAÑO, TAMAÑO), VELOCIDAD)
+    jugador = Jugador(Rect(0, 0, MEDIDA_DE_TILE, MEDIDA_DE_TILE), VELOCIDAD)
 
     ejecutando = True
     while ejecutando:
@@ -30,8 +21,8 @@ def main():
             if evento.type == pygame.QUIT:
                 ejecutando = False
 
-        teclas = pygame.key.get_pressed()
-        jugador.mover(teclas, DIMENSIONES_DEL_LIENZO)
+        teclas_presionadas = pygame.key.get_pressed()
+        jugador.mover(teclas_presionadas)
 
         escena.fill((0, 0, 0))
         pygame.draw.rect(escena, (0, 0, 255), jugador.cuerpo, 0, 100)

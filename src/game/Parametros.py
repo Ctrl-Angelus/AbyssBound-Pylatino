@@ -1,4 +1,25 @@
+
+import tkinter
+
+raiz = tkinter.Tk() # Una instancia de Tkinter que se usará para determinar las dimensiones de la aplicación
+raiz.withdraw() # Evita que se muestre la ventana
+
+ALTO_DE_LA_VENTANA: float = raiz.winfo_screenheight() * 0.9 # Se obtiene el 90% del alto de la ventana desde Tkinter
+ANCHO_DE_LA_VENTANA: float = ALTO_DE_LA_VENTANA # La ventana tiene mismo alto y ancho
+
+# Se almacenan las dimensiones en una tupla para evitar alteraciones posteriores
+DIMENSIONES_DEL_LIENZO: tuple = (
+    ANCHO_DE_LA_VENTANA,
+    ALTO_DE_LA_VENTANA
+)
+
 TITULO = "Proyecto Pylatino"
-FPS = 60
-TAMAÑO = 50
-VELOCIDAD = 5
+
+FPS: int = 60
+
+TILES = 20
+
+MEDIDA_DE_TILE: float = ALTO_DE_LA_VENTANA / TILES # Se divide el tamaño de la ventana entre la cantidad de tiles
+
+VELOCIDAD: float = (10 * MEDIDA_DE_TILE) / FPS # La velocidad son la cantidad de tiles que se mueve el personaje entre los fps cada segundo
+
