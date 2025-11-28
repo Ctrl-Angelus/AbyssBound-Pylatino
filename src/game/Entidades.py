@@ -2,7 +2,7 @@ import pygame
 from pygame import Rect
 from Colisiones import colision_limite
 from Parametros import MEDIDA_DE_TILE
-from src.game.Movimiento import movimiento_respecto_al_mouse
+from Movimiento import movimiento_respecto_al_mouse
 
 
 class Jugador:
