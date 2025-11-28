@@ -1,6 +1,5 @@
 import pygame
 from pygame import Rect
-from Colisiones import colision_limite
 from Parametros import MEDIDA_DE_TILE
 from Movimiento import movimiento_respecto_al_mouse
 
@@ -14,7 +13,7 @@ class Jugador:
             "adelante" : pygame.K_w
         }
 
-    def mover(self, posicion_mouse: tuple) -> None:
+    def mover(self, posicion_mouse: tuple, fondo: Rect) -> None:
         desplazamiento: tuple = movimiento_respecto_al_mouse(
             self.velocidad,
                 (
@@ -24,10 +23,5 @@ class Jugador:
                 posicion_mouse
             )
 
-        if colision_limite(self.cuerpo, tuple(desplazamiento)):
-            return
-        else:
-            self.cuerpo.move_ip(
-                desplazamiento[0],
-                desplazamiento[1]
-            )
+        fondo.x -= desplazamiento[0]
+        fondo.y -= desplazamiento[1]

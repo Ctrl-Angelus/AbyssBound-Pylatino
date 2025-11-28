@@ -1,10 +1,9 @@
 import math
-from Parametros import MEDIDA_DE_TILE
 
 
 def movimiento_respecto_al_mouse(velocidad: float, posicion_jugador: tuple, posicion_mouse: tuple) -> tuple:
 
-    zona_muerta = MEDIDA_DE_TILE# Un área alrededor del jugador donde no se genera movimiento
+    zona_muerta = 10# Un área alrededor del jugador donde no se genera movimiento
 
     # Se calcula el vector que se forma entre el jugador y el mouse
     vector_original = (
