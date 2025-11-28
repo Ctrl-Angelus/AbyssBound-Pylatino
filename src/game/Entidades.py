@@ -1,8 +1,9 @@
-import math
-
 import pygame
 from pygame import Rect
 from Colisiones import colision_limite
+from Parametros import MEDIDA_DE_TILE
+from src.game.Movimiento import movimiento_respecto_al_mouse
+
 
 class Jugador:
     def __init__(self, cuerpo: Rect, velocidad: float):
@@ -10,29 +11,33 @@ class Jugador:
         self.velocidad: float = velocidad
 
         self.controles = {
-            pygame.K_w: (0, -self.velocidad),
-            pygame.K_a: (-self.velocidad, 0),
-            pygame.K_s: (0, self.velocidad),
-            pygame.K_d: (self.velocidad, 0)
+            "adelante" : pygame.K_w,
+            "atras" : pygame.K_s,
+            "derecha" : pygame.K_d,
+            "izquierda" : pygame.K_a,
         }
 
-    def mover(self, teclas) -> None:
-        teclas_presionadas = 0
-        for clave, valor in self.controles.items():
-            if teclas[clave]:
-                teclas_presionadas += 1
+    def mover(self, teclas, posicion_mouse: tuple) -> None:
+        desplazamiento_total = [0, 0]
 
-        if teclas_presionadas == 2:
-            factor = math.sin(math.radians(45))
-        else:
-            factor = 1
-
-        for clave, movimiento in self.controles.items():
-            if teclas[clave]:
-                if colision_limite(self.cuerpo, movimiento):
-                    continue
-                else:
-                    self.cuerpo.move_ip(
-                        movimiento[0] * factor,
-                        movimiento[1] * factor
+        for tecla, valor in self.controles.items():
+            if teclas[valor]:
+                cambio_en_x, cambio_en_y = movimiento_respecto_al_mouse(
+                    self.velocidad,
+                        (
+                            self.cuerpo.x + MEDIDA_DE_TILE / 2,
+                            self.cuerpo.y + MEDIDA_DE_TILE / 2
+                         ),
+                        posicion_mouse,
+                        tecla
                     )
+                desplazamiento_total[0] += cambio_en_x
+                desplazamiento_total[1] += cambio_en_y
+
+        if colision_limite(self.cuerpo, tuple(desplazamiento_total)):
+            return
+        else:
+            self.cuerpo.move_ip(
+                desplazamiento_total[0],
+                desplazamiento_total[1]
+            )

@@ -13,7 +13,9 @@ def main():
     escena = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)
     tiempo = pygame.time.Clock()
 
-    jugador = Jugador(Rect(0, 0, MEDIDA_DE_TILE, MEDIDA_DE_TILE), VELOCIDAD)
+    posicion_inicial = (DIMENSIONES_DEL_LIENZO[0] / 2) - (MEDIDA_DE_TILE / 2)
+
+    jugador = Jugador(Rect(posicion_inicial, posicion_inicial, MEDIDA_DE_TILE, MEDIDA_DE_TILE), VELOCIDAD)
 
     ejecutando = True
     while ejecutando:
@@ -22,11 +24,13 @@ def main():
                 ejecutando = False
 
         teclas_presionadas = pygame.key.get_pressed()
-        jugador.mover(teclas_presionadas)
+        posicion_mouse = pygame.mouse.get_pos()
+
+        jugador.mover(teclas_presionadas, posicion_mouse)
 
         escena.fill((0, 0, 0))
         pygame.draw.rect(escena, (0, 0, 255), jugador.cuerpo, 0, 100)
-        pygame.display.update()
+        pygame.display.flip()
         tiempo.tick(FPS)
 
     pygame.quit()
