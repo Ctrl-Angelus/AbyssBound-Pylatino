@@ -17,7 +17,7 @@ python -m venv venv
 # Activar entorno virtual
 venv\Scripts\activate     # Windows
 
-source venv/bin/activate  # Linux/Mac
+source venv/Scripts/activate  # Linux/Mac
 
 # Instalar dependencias
 pip install -r requirements.txt
