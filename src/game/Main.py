@@ -24,9 +24,11 @@ def main():
                 ejecutando = False
 
         teclas_presionadas = pygame.key.get_pressed()
-        posicion_mouse = pygame.mouse.get_pos()
 
-        jugador.mover(teclas_presionadas, posicion_mouse)
+        if teclas_presionadas[jugador.controles.get("adelante")]:
+            posicion_mouse = pygame.mouse.get_pos()
+
+            jugador.mover(posicion_mouse)
 
         escena.fill((0, 0, 0))
         pygame.draw.rect(escena, (0, 0, 255), jugador.cuerpo, 0, 100)

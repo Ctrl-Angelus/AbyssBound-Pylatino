@@ -21,5 +21,5 @@ TILES = 15
 
 MEDIDA_DE_TILE: float = ALTO_DE_LA_VENTANA / TILES # Se divide el tamaño de la ventana entre la cantidad de tiles
 
-VELOCIDAD: float = (5 * MEDIDA_DE_TILE) / FPS # La velocidad son la cantidad de tiles que se mueve el personaje entre los fps cada segundo
+VELOCIDAD: float = (10 * MEDIDA_DE_TILE) / FPS # La velocidad son la cantidad de tiles que se mueve el personaje entre los fps cada segundo
 

@@ -1,9 +1,10 @@
 import math
+from Parametros import MEDIDA_DE_TILE
 
 
-def movimiento_respecto_al_mouse(velocidad: float, posicion_jugador: tuple, posicion_mouse: tuple, tecla: str) -> tuple:
+def movimiento_respecto_al_mouse(velocidad: float, posicion_jugador: tuple, posicion_mouse: tuple) -> tuple:
 
-    zona_muerta = 5 # Un área alrededor del jugador donde no se genera movimiento
+    zona_muerta = MEDIDA_DE_TILE# Un área alrededor del jugador donde no se genera movimiento
 
     # Se calcula el vector que se forma entre el jugador y el mouse
     vector_original = (
@@ -23,20 +24,4 @@ def movimiento_respecto_al_mouse(velocidad: float, posicion_jugador: tuple, posi
     movimiento_x = vector_unitario[0] * velocidad
     movimiento_y = vector_unitario[1] * velocidad
 
-    movimiento = [0, 0]
-
-    match tecla:
-        case "atras":
-            movimiento[0] += -movimiento_x
-            movimiento[1] += -movimiento_y
-        case "derecha":
-            movimiento[0] += movimiento_y
-            movimiento[1] += -movimiento_x
-        case "izquierda":
-            movimiento[0] += -movimiento_y
-            movimiento[1] += movimiento_x
-        case _:
-            movimiento[0] += movimiento_x
-            movimiento[1] += movimiento_y
-
-    return tuple(movimiento)
+    return movimiento_x, movimiento_y
