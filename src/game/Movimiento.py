@@ -1,14 +1,12 @@
 import math
 
 
-def movimiento_respecto_al_mouse(velocidad: float, posicion_jugador: tuple, posicion_mouse: tuple) -> tuple:
-
-    zona_muerta = 10 # Un área alrededor del jugador donde no se genera movimiento
+def movimiento_relativo(velocidad: float, posicion_actual: tuple, posicion_objetivo: tuple, zona_muerta: float) -> tuple:
 
     # Se calcula el vector que se forma entre el jugador y el mouse
     vector_original = (
-        posicion_mouse[0] - posicion_jugador[0],
-        posicion_mouse[1] - posicion_jugador[1]
+        posicion_objetivo[0] - posicion_actual[0],
+        posicion_objetivo[1] - posicion_actual[1]
     )
 
     # La distancia entre los puntos genera la magnitud del vector

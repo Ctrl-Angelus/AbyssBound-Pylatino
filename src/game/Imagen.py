@@ -23,4 +23,4 @@ class Imagen:
         self.width = self.imagen.get_width()
         self.height = self.imagen.get_height()
 
-        self.rect: Rect = self.imagen.get_rect()
+        self.cuerpo: Rect = self.imagen.get_rect()
