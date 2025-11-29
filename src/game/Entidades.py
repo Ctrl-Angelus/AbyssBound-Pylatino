@@ -4,8 +4,8 @@ from Movimiento import movimiento_respecto_al_mouse
 from Colisiones import colision_con_el_limite
 
 class Jugador:
-    def __init__(self, posicion_inicial_x: float, posicion_inicial_y: float, alto, ancho, velocidad: float):
-        sprite_original = pygame.image.load("src/recursos/jugador.png").convert_alpha()
+    def __init__(self, posicion_inicial_x: float, posicion_inicial_y: float, alto, ancho, velocidad: float, ruta: str):
+        sprite_original = pygame.image.load(ruta).convert_alpha()
 
         self.sprite = pygame.transform.scale(
             sprite_original,
@@ -16,6 +16,7 @@ class Jugador:
         )
 
         self.cuerpo: Rect = self.sprite.get_rect()
+        self.ruta = ruta
         self.velocidad: float = velocidad
 
         self.cuerpo.x = posicion_inicial_x

@@ -1,23 +1,23 @@
 import pygame
 from pygame import Rect, Surface
-from Parametros import DIMENSIONES_DEL_LIENZO
+from Parametros import *
 
 
 class Imagen:
-    def __init__(self, ruta: str, escalado_tiles: int):
+    def __init__(self, ruta: str, tiles_x: int, tiles_y: int):
         self.ruta: str = ruta
 
         imagen: Surface = pygame.image.load(self.ruta).convert()
 
 
-        self.factor_escalado = (
-                DIMENSIONES_DEL_LIENZO[0] / (imagen.width / escalado_tiles),
-                DIMENSIONES_DEL_LIENZO[1] / (imagen.height / escalado_tiles)
+        self.escalado = (
+                TAMAÑO_TILE_ORIGINAL * (MEDIDA_DE_TILE / TAMAÑO_TILE_ORIGINAL) * tiles_x,
+                TAMAÑO_TILE_ORIGINAL * (MEDIDA_DE_TILE / TAMAÑO_TILE_ORIGINAL) * tiles_y
         )
 
         self.imagen: Surface = pygame.transform.scale(imagen, (
-            imagen.width * self.factor_escalado[0],
-            imagen.height * self.factor_escalado[1]
+            self.escalado[0],
+            self.escalado[1]
         ))
 
         self.width = self.imagen.get_width()

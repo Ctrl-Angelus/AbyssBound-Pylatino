@@ -18,8 +18,11 @@ TITULO = "Proyecto Pylatino"
 FPS: int = 60
 
 TILES = 15
+TAMAÑO_TILE_ORIGINAL = 16 # Cada Tile mide 16x16 pixeles
 
 MEDIDA_DE_TILE: float = ALTO_DE_LA_VENTANA / TILES # Se divide el tamaño de la ventana entre la cantidad de tiles
+
+
 
 VELOCIDAD: float = (10 * MEDIDA_DE_TILE) / FPS # La velocidad son la cantidad de tiles que se mueve el personaje entre los fps cada segundo
 

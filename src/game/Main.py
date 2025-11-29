@@ -13,9 +13,9 @@ def main():
     escena = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)
     tiempo = pygame.time.Clock()
 
-    fondo = Imagen("src/recursos/fondo.png", 2)
+    fondo = Imagen("src/recursos/fondo.png", 30, 30)
 
-    fondo_estatico = Imagen("src/recursos/fondo-estatico.png", 1)
+    fondo_estatico = Imagen("src/recursos/fondo-estatico.png", TILES, TILES)
 
     fondo.rect.x = -(fondo.width - DIMENSIONES_DEL_LIENZO[0]) / 2
     fondo.rect.y = -(fondo.height - DIMENSIONES_DEL_LIENZO[1]) / 2
@@ -23,7 +23,7 @@ def main():
     posicion_inicial_x = escena.get_rect().center[0] - MEDIDA_DE_TILE / 2
     posicion_inicial_y = escena.get_rect().center[1] - MEDIDA_DE_TILE / 2
 
-    jugador = Jugador(posicion_inicial_x, posicion_inicial_y, MEDIDA_DE_TILE, MEDIDA_DE_TILE, VELOCIDAD)
+    jugador = Jugador(posicion_inicial_x, posicion_inicial_y, MEDIDA_DE_TILE, MEDIDA_DE_TILE, VELOCIDAD, "src/recursos/jugador.png")
 
     ejecutando = True
     while ejecutando:
