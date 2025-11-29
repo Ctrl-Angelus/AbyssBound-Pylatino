@@ -3,7 +3,7 @@ import random
 
 from Entidades import Jugador, Entidad
 from Parametros import *
-from Imagen import Imagen
+from Sprite import Sprite
 
 
 def main():
@@ -14,12 +14,12 @@ def main():
     escena = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)
     tiempo = pygame.time.Clock()
 
-    fondo = Imagen(
+    fondo = Sprite(
         "src/recursos/fondo.png",
         60, 30
     )
 
-    fondo_estatico = Imagen("src/recursos/fondo-estatico.png", TILES, TILES)
+    fondo_estatico = Sprite("src/recursos/fondo-estatico.png", TILES, TILES)
 
     fondo.cuerpo.x = -(fondo.width - DIMENSIONES_DEL_LIENZO[0]) / 2
     fondo.cuerpo.y = -(fondo.height - DIMENSIONES_DEL_LIENZO[1]) / 2
@@ -48,18 +48,26 @@ def main():
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
                 ejecutando = False
+            if evento.type == jugador.controles["click"]:
+                print("Click")
 
         teclas_presionadas = pygame.key.get_pressed()
-        if teclas_presionadas[jugador.controles.get("adelante")]:
-            posicion_mouse = pygame.mouse.get_pos()
+        posicion_mouse = pygame.mouse.get_pos()
+        if teclas_presionadas[jugador.controles["adelante"]]:
+            jugador.mover(posicion_mouse, fondo.cuerpo, -1, enemigos)
 
-            jugador.mover(posicion_mouse, fondo.cuerpo, enemigos)
+        elif teclas_presionadas[jugador.controles["atrás"]]:
+
+            jugador.mover(posicion_mouse, fondo.cuerpo, 1, enemigos)
+
+
 
         escena.blit(fondo_estatico.imagen, fondo_estatico.cuerpo)
         escena.blit(fondo.imagen, fondo.cuerpo)
 
         for enemigo in enemigos:
-            enemigo.mover(jugador.cuerpo.center, fondo.cuerpo, 1)
+            if teclas_presionadas[pygame.K_SPACE]:
+                enemigo.mover(jugador.cuerpo.center, fondo.cuerpo, 1)
             escena.blit(enemigo.sprite, enemigo.cuerpo)
 
         escena.blit(jugador.sprite, jugador.cuerpo)

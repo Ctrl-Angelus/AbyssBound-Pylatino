@@ -3,7 +3,7 @@ from pygame import Rect, Surface
 from Parametros import *
 
 
-class Imagen:
+class Sprite:
     def __init__(self, ruta: str, tiles_x: int, tiles_y: int):
         self.ruta: str = ruta
 
