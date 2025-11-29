@@ -5,6 +5,10 @@
 .idea/
 
 ### Python ###
+build/
+dist/
+out/
+bin/
 venv/
 __pycache__/
 *.pyc
