@@ -3,7 +3,9 @@ import math
 from pygame import Rect
 
 
-def movimiento_relativo(velocidad: float, posicion_actual: tuple, posicion_objetivo: tuple, zona_muerta: float) -> tuple:
+def movimiento_relativo(velocidad: float, posicion_actual: tuple, posicion_objetivo: tuple) -> tuple:
+
+    zona_muerta: float = 10 # Una zona (en pixeles) alrededor del objetivo que previene magnitudes (distancias entre puntos) de cero
 
     # Se calcula el vector que se forma entre el jugador y el mouse
     vector_original = (

@@ -1,12 +1,11 @@
 import pygame
 from pygame import Rect, Surface
-import random
 
-from src.game.Parametros import MEDIDA_DE_TILE
 from src.game.Movimiento.Movimiento import movimiento_relativo, mover_fondo
 from src.game.Colisiones.Colisiones_borde import colision_borde_jugador
 from src.game.Colisiones.Colisiones_borde import colision_borde_enemigos
 from src.game.Colisiones.Colisiones_entidades import colisiones_con_entidades
+from src.game.Parametros import MEDIDA_DE_TILE
 
 
 class Entidad:
@@ -30,22 +29,21 @@ class Entidad:
 
 class Enemigo(Entidad):
 
-    def __init__(self, posicion_inicial: tuple, alto, ancho, velocidad: float, url: str, objetivos: list[tuple]):
+    def __init__(self, posicion_inicial: tuple, alto, ancho, velocidad: float, url: str, objetivo: tuple):
         super().__init__(posicion_inicial, alto, ancho, velocidad, url)
 
-        self.objetivo: tuple = random.choice(objetivos)
+        self.objetivo: tuple = objetivo
 
-    def mover(self, fondo: Rect, direccion: int, entidades: list):
+    def mover(self, fondo: Rect, direccion: int, entidades: list, jugador):
         desplazamiento: tuple = movimiento_relativo(
             self.velocidad,
             self.cuerpo.center,
-            self.objetivo,
-            MEDIDA_DE_TILE / 2
+            self.objetivo
         )
 
         movimiento_x, movimiento_y = colision_borde_enemigos(self.cuerpo, desplazamiento, fondo, direccion)
 
-        colisiones_con_entidades(self, movimiento_x, movimiento_y, entidades)
+        colisiones_con_entidades(self, movimiento_x, movimiento_y, entidades, jugador)
 
 class Jugador(Entidad):
     controles = {
@@ -58,12 +56,40 @@ class Jugador(Entidad):
         desplazamiento: tuple = movimiento_relativo(
             self.velocidad,
                 self.cuerpo.center,
-                posicion_mouse,
-                10
+                posicion_mouse
             )
 
         movimiento_x, movimiento_y = colision_borde_jugador(self.cuerpo, desplazamiento, fondo, direccion)
 
-        mover_fondo(fondo, entidades, movimiento_x, movimiento_y)
+        correccion_x = 0
+        correccion_y = 0
+
+        mover_fondo(fondo, entidades, movimiento_x, 0)
+
+        for entidad in entidades:
+            colision = self.cuerpo.colliderect(entidad.cuerpo)
+
+            if colision:
+                if movimiento_x > 0:
+                    correccion_x = self.cuerpo.left - entidad.cuerpo.right
+
+                elif movimiento_x < 0:
+                    correccion_x = self.cuerpo.right - entidad.cuerpo.left
+
+                mover_fondo(fondo, entidades, correccion_x, 0)
+
+        mover_fondo(fondo, entidades, 0, movimiento_y)
+
+        for entidad in entidades:
+            colision = self.cuerpo.colliderect(entidad.cuerpo)
+
+            if colision:
+                if movimiento_y > 0:
+                    correccion_y = self.cuerpo.top - entidad.cuerpo.bottom
+
+                elif movimiento_y < 0:
+                    correccion_y = self.cuerpo.bottom - entidad.cuerpo.top
+
+                mover_fondo(fondo, entidades, 0, correccion_y)
 
 

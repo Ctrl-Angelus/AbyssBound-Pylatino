@@ -34,7 +34,7 @@ def main():
         "src/recursos/jugador.png"
     )
 
-    objetivos = [jugador.cuerpo.topleft, jugador.cuerpo.topright, jugador.cuerpo.bottomleft, jugador.cuerpo.bottomright]
+    direccion = 1
 
     for i in range(20):
         x_aleatoria = random.randint(fondo.cuerpo.left, int(fondo.cuerpo.right - MEDIDA_DE_TILE))
@@ -45,18 +45,27 @@ def main():
                 MEDIDA_DE_TILE, MEDIDA_DE_TILE,
                 VELOCIDAD / 2,
                 "src/recursos/enemigo.png",
-                objetivos)
+                jugador.cuerpo.center)
         )
 
     posicion_mouse = pygame.mouse.get_pos()
 
     ejecutando = True
+    movimiento_enemigos = True
+
     while ejecutando:
         for evento in pygame.event.get():
+
             if evento.type == pygame.QUIT:
                 ejecutando = False
+
             if evento.type == jugador.controles["click"]:
-                print("Click")
+                if evento.button ==  1:
+                    direccion *= -1
+
+                if evento.button ==  3:
+                    movimiento_enemigos = not movimiento_enemigos
+
             if evento.type == pygame.MOUSEMOTION:
                 posicion_mouse = pygame.mouse.get_pos()
 
@@ -75,7 +84,8 @@ def main():
         escena.blit(fondo.imagen, fondo.cuerpo)
 
         for entidad in entidades:
-            entidad.mover(fondo.cuerpo, 1, entidades)
+            if movimiento_enemigos:
+                entidad.mover(fondo.cuerpo, direccion, entidades, jugador)
             escena.blit(entidad.sprite, entidad.cuerpo)
 
         escena.blit(jugador.sprite, jugador.cuerpo)
