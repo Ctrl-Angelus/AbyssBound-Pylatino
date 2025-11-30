@@ -1,7 +1,7 @@
 from pygame import Rect
 
 
-def desplazamiento_y_colision(personaje: Rect, desplazamiento: tuple, fondo: Rect, direccion: int) -> tuple:
+def colision_fondo(personaje: Rect, desplazamiento: tuple, fondo: Rect, direccion: int) -> tuple:
 
     simulacion: Rect = fondo.move(
         desplazamiento[0] * direccion,

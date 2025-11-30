@@ -1,7 +1,7 @@
 import math
 
 
-def movimiento_relativo(velocidad: float, posicion_actual: tuple, posicion_objetivo: tuple, zona_muerta: float, distancia) -> tuple:
+def movimiento_relativo(velocidad: float, posicion_actual: tuple, posicion_objetivo: tuple, zona_muerta: float) -> tuple:
 
     # Se calcula el vector que se forma entre el jugador y el mouse
     vector_original = (
@@ -10,10 +10,7 @@ def movimiento_relativo(velocidad: float, posicion_actual: tuple, posicion_objet
     )
 
     # La distancia entre los puntos genera la magnitud del vector
-    if distancia is None:
-        magnitud = math.sqrt(vector_original[0] ** 2 + vector_original[1] ** 2)
-    else:
-        magnitud = distancia
+    magnitud = math.sqrt(vector_original[0] ** 2 + vector_original[1] ** 2)
 
     # En caso de que la magnitud sea
     if magnitud < zona_muerta:

@@ -14,6 +14,8 @@ def main():
     escena = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)
     tiempo = pygame.time.Clock()
 
+    entidades = []
+
     fondo = Sprite(
         "src/recursos/fondo.png",
         60, 30
@@ -32,14 +34,12 @@ def main():
         VELOCIDAD, "src/recursos/jugador.png"
     )
 
-    enemigos = []
     posicion_mouse = pygame.mouse.get_pos()
-    movimiento_mouse = False
 
     for i in range(20):
         x = random.randint(fondo.cuerpo.left, int(fondo.cuerpo.right - MEDIDA_DE_TILE))
         y = random.randint(fondo.cuerpo.top, int(fondo.cuerpo.bottom - MEDIDA_DE_TILE))
-        enemigos.append(
+        entidades.append(
             Entidad(
                 x, y, MEDIDA_DE_TILE, MEDIDA_DE_TILE,
                 VELOCIDAD / 2, "src/recursos/enemigo.png")
@@ -59,20 +59,20 @@ def main():
 
 
         if teclas_presionadas[jugador.controles["adelante"]]:
-            jugador.mover(posicion_mouse, fondo.cuerpo, -1, enemigos)
+            jugador.mover(posicion_mouse, fondo.cuerpo, -1, entidades)
 
         elif teclas_presionadas[jugador.controles["atrás"]]:
-            jugador.mover(posicion_mouse, fondo.cuerpo, 1, enemigos)
+            jugador.mover(posicion_mouse, fondo.cuerpo, 1, entidades)
 
 
 
         escena.blit(fondo_estatico.imagen, fondo_estatico.cuerpo)
         escena.blit(fondo.imagen, fondo.cuerpo)
 
-        for enemigo in enemigos:
+        for entidad in entidades:
             if teclas_presionadas[pygame.K_SPACE]:
-                enemigo.mover(jugador.cuerpo.center, fondo.cuerpo, 1, enemigos)
-            escena.blit(enemigo.sprite, enemigo.cuerpo)
+                entidad.mover(jugador.cuerpo.center, fondo.cuerpo, 1, entidades)
+            escena.blit(entidad.sprite, entidad.cuerpo)
 
         escena.blit(jugador.sprite, jugador.cuerpo)
 

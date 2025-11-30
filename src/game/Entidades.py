@@ -2,7 +2,7 @@
 import pygame
 from pygame import Rect
 from Movimiento import movimiento_relativo
-from Colisiones_borde import desplazamiento_y_colision
+from Colisiones_borde import colision_fondo
 from Parametros import MEDIDA_DE_TILE
 from Colisiones_borde import desplazamiento_y_colision_enemigos
 from Colisiones_entidades import colisiones_con_entidades
@@ -32,14 +32,12 @@ class Entidad:
             self.velocidad,
             self.cuerpo.center,
             objetivo,
-            MEDIDA_DE_TILE / 2,
-            None
+            MEDIDA_DE_TILE / 2
         )
 
         movimiento_x, movimiento_y = desplazamiento_y_colision_enemigos(self.cuerpo, desplazamiento, fondo, direccion)
 
         colisiones_con_entidades(self, movimiento_x, movimiento_y, entidades)
-
 
 class Jugador(Entidad):
     controles = {
@@ -53,13 +51,13 @@ class Jugador(Entidad):
             self.velocidad,
                 self.cuerpo.center,
                 posicion_mouse,
-                10,
-            None
+                10
             )
 
-        movimiento_x, movimiento_y = desplazamiento_y_colision(self.cuerpo, desplazamiento, fondo, direccion)
+        movimiento_x, movimiento_y = colision_fondo(self.cuerpo, desplazamiento, fondo, direccion)
 
         for entidad in entidades:
+
             entidad.cuerpo.move_ip(
                 movimiento_x, movimiento_y
             )
