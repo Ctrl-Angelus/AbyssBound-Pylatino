@@ -12,7 +12,7 @@ class Escenario:
         self.fondo.cuerpo.y = -(self.fondo.height - DIMENSIONES_DEL_LIENZO[1]) / 2
 
         self.fondo_estatico = SpriteSheet("src/recursos/fondo-estatico.png")
-        self.fondo_estatico.generar_frames(4, 1, (60, 60), 1)
+        self.fondo_estatico.generar_frames(4, 2, (60, 60), 1)
         self.fondo_estatico.iniciar_animacion()
 
 

@@ -43,6 +43,7 @@ class SpriteSheet:
         self.animacion_activa = False
 
     def animacion(self, fila):
+        self.coordenada_sprite_actual[0] = fila
         if self.animacion_activa:
             self.momento_actual_animacion = pygame.time.get_ticks()
 
