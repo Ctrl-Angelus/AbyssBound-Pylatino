@@ -48,7 +48,7 @@ class Jugador(EntidadBase):
         desplazamiento: tuple = movimiento_relativo(
             self.velocidad * self.modificador_de_velocidad,
                 self.cuerpo.center,
-                self.contexto.obtener_posicion_mouse()
+                pygame.mouse.get_pos()
             )
 
         movimiento_x, movimiento_y = colision_borde_jugador(self.cuerpo, desplazamiento, fondo, self.direccion)
@@ -93,10 +93,10 @@ class Jugador(EntidadBase):
     def activar_dash(self):
         if not self.dash_activo:
             self.dash_activo = True
-            self.inicio_dash = self.contexto.obtener_ticks()
+            self.inicio_dash = pygame.time.get_ticks()
 
     def dash(self):
-        momento_actual = self.contexto.obtener_ticks()
+        momento_actual = pygame.time.get_ticks()
         self.modificar_velocidad(3)
 
         if momento_actual - self.inicio_dash >= self.duracion_dash * 0.75:

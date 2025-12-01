@@ -31,7 +31,7 @@ def main():
 
         contexto.escena.blit(jugador.sprite, jugador.cuerpo)
 
-        contexto.display.flip()
+        pygame.display.flip()
         contexto.reloj.tick(FPS)
 
     pygame.quit()

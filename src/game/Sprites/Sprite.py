@@ -2,13 +2,13 @@ import pygame
 from pygame import Rect, Surface
 
 from src.game.Gestion.Parametros import *
-
+from typing import Optional
 
 class Sprite:
-    def __init__(self, ruta: str, tiles):
-        self.ruta: str = ruta
+    def __init__(self, ruta: Optional[str], tiles: Optional[tuple], imagen: Optional[Surface]):
 
-        imagen: Surface = pygame.image.load(self.ruta).convert()
+        if imagen is None:
+            imagen: Surface = pygame.image.load(ruta).convert_alpha()
 
         if tiles is None:
             self.tiles_x: int = imagen.get_width() // MEDIDA_DE_TILE_ORIGINAL

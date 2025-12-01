@@ -25,7 +25,7 @@ class Controlador:
                 self.jugador_intangible()
 
     def verificar_controles(self):
-        teclas_presionadas = self.contexto.obtener_teclas_presionadas()
+        teclas_presionadas = pygame.key.get_pressed()
 
         if self.jugador.dash_activo:
             self.jugador.mover()
