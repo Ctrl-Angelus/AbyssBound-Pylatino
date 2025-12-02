@@ -57,5 +57,5 @@ class SpriteSheet:
 
 def obtener_sprite(spritesheet: Surface, x, y, ancho, alto) -> Sprite:
     rect = pygame.Rect(x, y, ancho, alto)
-    superficie = spritesheet.subsurface(rect)
+    superficie = spritesheet.subsurface(rect).copy()
     return Sprite(None, (CANTIDAD_DE_TILES, CANTIDAD_DE_TILES), superficie)
