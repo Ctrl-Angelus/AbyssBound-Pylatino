@@ -1,8 +1,8 @@
 import pygame
 
 from src.game.Clases.EntidadBase import EntidadBase
+from src.game.Colisiones.Colisiones_entidades import colisiones_con_entidades
 from src.game.Movimiento.Movimiento import movimiento_relativo, mover_fondo
-from src.game.Colisiones.Colisiones_borde import colision_borde_jugador
 from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD
 from src.game.Gestion.Contexto import ContextoDelJuego
 
@@ -25,8 +25,8 @@ class Jugador(EntidadBase):
         }
 
         self.direcciones = {
-            "adelante": -1,
-            "atras": 1
+            "adelante": 1,
+            "atras": -1
         }
 
         self.direccion = self.direcciones["adelante"]
@@ -38,62 +38,35 @@ class Jugador(EntidadBase):
 
         self.colisiones = True
 
-    def mover(self) -> None:
+    def movimiento(self) -> None:
 
         if self.dash_activo:
             self.dash()
 
-        desplazamiento: tuple = movimiento_relativo(
+        movimiento_x, movimiento_y = movimiento_relativo(
             self.velocidad * self.modificador_de_velocidad,
-                self.cuerpo.center,
+                self.obtener_posicion(),
                 pygame.mouse.get_pos()
             )
 
-        movimiento_x, movimiento_y = colision_borde_jugador(self.cuerpo, desplazamiento, self.contexto.escenario.tile_map.borde, self.direccion)
+        movimiento_x *= self.direccion
+        movimiento_y *= self.direccion
 
         if self.colisiones:
-
-            correccion_x = 0
-            correccion_y = 0
-
-            mover_fondo(self.contexto, movimiento_x, 0)
-
-            for entidad in self.contexto.entidades:
-                colision = self.cuerpo.colliderect(entidad.cuerpo)
-
-                if colision:
-                    if movimiento_x > 0:
-                        correccion_x = self.cuerpo.left - entidad.cuerpo.right
-
-                    elif movimiento_x < 0:
-                        correccion_x = self.cuerpo.right - entidad.cuerpo.left
-
-                    mover_fondo(self.contexto, correccion_x, 0)
-
-            mover_fondo(self.contexto,0, movimiento_y)
-
-            for entidad in self.contexto.entidades:
-                colision = self.cuerpo.colliderect(entidad.cuerpo)
-
-                if colision:
-                    if movimiento_y > 0:
-                        correccion_y = self.cuerpo.top - entidad.cuerpo.bottom
-
-                    elif movimiento_y < 0:
-                        correccion_y = self.cuerpo.bottom - entidad.cuerpo.top
-
-                    mover_fondo(self.contexto, 0, correccion_y)
+            colisiones_con_entidades(self, movimiento_x, movimiento_y, self.contexto.entidades)
 
         else:
-            mover_fondo(self.contexto, movimiento_x, movimiento_y)
+            self.mover(movimiento_x, movimiento_y)
 
+    def mover(self, movimiento_x, movimiento_y) -> None:
+        mover_fondo(self, self.contexto, movimiento_x, movimiento_y)
 
-    def activar_dash(self):
+    def activar_dash(self) -> None:
         if not self.dash_activo:
             self.dash_activo = True
             self.inicio_dash = pygame.time.get_ticks()
 
-    def dash(self):
+    def dash(self) -> None:
         momento_actual = pygame.time.get_ticks()
         self.modificar_velocidad(3)
 

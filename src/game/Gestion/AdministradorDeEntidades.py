@@ -31,7 +31,6 @@ class AdministradorDeEntidades:
                     posicion_inicial,
                     velocidad_enemigos,
                     "src/recursos/enemigo.png",
-                    self.jugador.cuerpo.center,
                     self.contexto,
                     self.jugador
                 )

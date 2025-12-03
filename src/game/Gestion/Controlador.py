@@ -26,17 +26,21 @@ class Controlador:
 
     def verificar_controles(self):
         teclas_presionadas = pygame.key.get_pressed()
+        dash = self.jugador.dash_activo
+        adelante = teclas_presionadas[self.jugador.controles["adelante"]]
+        atras = teclas_presionadas[self.jugador.controles["atrás"]]
 
-        if self.jugador.dash_activo:
-            self.jugador.mover()
 
-        elif teclas_presionadas[self.jugador.controles["adelante"]]:
-            self.jugador.mover()
+        if dash:
+            self.jugador.movimiento()
 
-        elif teclas_presionadas[self.jugador.controles["atrás"]]:
+        elif adelante:
+            self.jugador.movimiento()
+
+        elif atras:
             self.jugador.modificar_direccion("atras")
             self.jugador.modificar_velocidad(0.75)
-            self.jugador.mover()
+            self.jugador.movimiento()
             self.jugador.modificar_velocidad(1)
             self.jugador.modificar_direccion("adelante")
 

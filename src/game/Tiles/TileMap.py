@@ -33,7 +33,9 @@ class TileMap:
             x = self.posicion_inicial[0]
             fila = []
             for tile in linea:
-                tile = self.tile_set.tiles[tile]
+                indice = int(tile) - 1
+                lista = self.tile_set.tiles
+                tile = lista[0][indice]
                 fila.append(Tile(None, (1, 1), tile.copy(), int(x), int(y)))
                 x += int(MEDIDA_DE_TILE_ESCALADO)
             self.tiles.append(fila)
@@ -49,5 +51,5 @@ class TileMap:
     def mostrar(self):
         for linea in self.tiles:
             for tile in linea:
-                if 0 <= tile.cuerpo.right and tile.cuerpo.left <= DIMENSIONES_DEL_LIENZO[0] and 0 <= tile.cuerpo.bottom and tile.cuerpo.top <= DIMENSIONES_DEL_LIENZO[1]:
-                    self.contexto.escena.blit(tile.imagen, tile.cuerpo)
+                if self.contexto.offset[0] <= tile.cuerpo.right and tile.cuerpo.left <= DIMENSIONES_DEL_LIENZO[0] + self.contexto.offset[0] and self.contexto.offset[1] <= tile.cuerpo.bottom and tile.cuerpo.top <= DIMENSIONES_DEL_LIENZO[1] + self.contexto.offset[1]:
+                    self.contexto.escena.blit(tile.imagen, (tile.cuerpo.x - self.contexto.offset[0], tile.cuerpo.y - self.contexto.offset[1]))

@@ -10,6 +10,7 @@ class ContextoDelJuego:
         pygame.init()
 
         self.ejecutando = True
+        self.offset = [0, 0]
 
         self.escena: Surface = pygame.display.set_mode(DIMENSIONES_DEL_LIENZO)
         self.reloj = pygame.time.Clock()
@@ -20,6 +21,7 @@ class ContextoDelJuego:
         pygame.display.set_caption(TITULO)
 
         self.escenario = Escenario(self)
+
 
     def limpiar_entidades(self):
         self.entidades = []

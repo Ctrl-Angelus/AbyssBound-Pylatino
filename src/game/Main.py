@@ -14,10 +14,12 @@ def main():
 
     administrador_de_entidades = AdministradorDeEntidades(contexto, jugador)
     administrador_de_entidades.generar_oleada(20)
+    contexto.entidades.append(jugador)
 
     controlador = Controlador(contexto, jugador)
 
     while contexto.ejecutando:
+
         for evento in pygame.event.get():
             controlador.verificar_eventos(evento)
 
@@ -26,11 +28,12 @@ def main():
         contexto.escenario.mostrar()
 
         for entidad in contexto.entidades:
-            entidad.mover()
-            if 0 <= entidad.cuerpo.right and entidad.cuerpo.left <= DIMENSIONES_DEL_LIENZO[0] and 0 <= entidad.cuerpo.bottom and entidad.cuerpo.top <= DIMENSIONES_DEL_LIENZO[1]:
-                contexto.escena.blit(entidad.sprite, entidad.cuerpo)
+            if entidad is not jugador:
+                entidad.movimiento()
+            if contexto.offset[0] <= entidad.cuerpo.right and entidad.cuerpo.left <= DIMENSIONES_DEL_LIENZO[0] + contexto.offset[0] and contexto.offset[1] <= entidad.cuerpo.bottom and entidad.cuerpo.top <= DIMENSIONES_DEL_LIENZO[1] + contexto.offset[1]:
+                contexto.escena.blit(entidad.sprite, entidad.obtener_posicion())
 
-        contexto.escena.blit(jugador.sprite, jugador.cuerpo)
+        contexto.escena.blit(jugador.sprite, jugador.obtener_posicion())
 
         pygame.display.flip()
         contexto.reloj.tick(FPS)

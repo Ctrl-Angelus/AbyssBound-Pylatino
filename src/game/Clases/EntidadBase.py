@@ -25,3 +25,9 @@ class EntidadBase:
 
         self.cuerpo.move_ip(posicion_inicial)
         self.contexto = contexto
+
+    def obtener_posicion(self) -> tuple:
+        return self.cuerpo.centerx - self.contexto.offset[0], self.cuerpo.centery - self.contexto.offset[1]
+
+    def mover(self, movimiento_x, movimiento_y) -> None:
+        self.cuerpo.move_ip(movimiento_x, movimiento_y)
