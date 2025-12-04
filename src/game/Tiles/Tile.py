@@ -1,4 +1,6 @@
 from typing import Optional
+
+import pygame.time
 from pygame import Surface
 
 from src.game.Gestion.Parametros import DIMENSIONES_DEL_LIENZO
@@ -41,5 +43,21 @@ class Tile(Sprite):
         return self.cuerpo.centerx - self.contexto.offset[0], self.cuerpo.centery - self.contexto.offset[1]
 
 class TileConAccion(Tile):
+    accionado = False
+    duracion = 1000 # milisegundos
+    inicio = 0
+    ahora = 0
+
+    def accionar(self):
+        if not self.accionado:
+            self.accionado = True
+            self.inicio = pygame.time.get_ticks()
+            self.accion()
+        else:
+            self.ahora = pygame.time.get_ticks()
+
+            if self.ahora - self.inicio >= self.duracion:
+                self.accionado = False
+
     def accion(self):
         print(f"accion realizada por: {self.id}")

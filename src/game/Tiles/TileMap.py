@@ -37,6 +37,11 @@ class TileMap:
 
                 lista = self.tile_set.tiles
                 material = int(self.datos[fila][columna])
+                if material == 0:
+                    fila_actual.append(None)
+                    posicion_x += int(MEDIDA_DE_TILE_ESCALADO)
+                    continue
+
                 indice =  material - 1
                 colision = True if material == 1 else False
                 accion = True if material == 2 else False
@@ -84,6 +89,8 @@ class TileMap:
     def mostrar(self):
         for linea in self.tiles:
             for tile in linea:
+                if tile is None:
+                    continue
                 if tile.es_visible():
                     self.contexto.escena.blit(tile.imagen, tile.obtener_posicion_visual())
 

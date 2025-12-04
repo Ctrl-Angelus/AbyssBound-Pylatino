@@ -57,7 +57,7 @@ class Jugador(EntidadBase):
                 self.contexto.ejecutando = False
 
             elif tile_actual.tiene_accion:
-                tile_actual.accion()
+                tile_actual.accionar()
 
         else:
             self.mover(movimiento_x, movimiento_y)

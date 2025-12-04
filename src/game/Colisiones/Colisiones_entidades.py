@@ -47,6 +47,8 @@ def colision_tiles(entidad, movimiento_x: float, movimiento_y: float, contexto: 
 
     tiles_cercanos = contexto.escenario.tile_map.obtener_tiles_cercanos(simulacion_x)
     for tile in tiles_cercanos:
+        if tile is None:
+            continue
         if not tile.colision:
             continue
 
@@ -64,6 +66,8 @@ def colision_tiles(entidad, movimiento_x: float, movimiento_y: float, contexto: 
 
     tiles_cercanos = contexto.escenario.tile_map.obtener_tiles_cercanos(simulacion_y)
     for tile in tiles_cercanos:
+        if tile is None:
+            continue
         if not tile.colision:
             continue
 
@@ -83,6 +87,8 @@ def posibles_colisiones(rect, contexto: ContextoDelJuego):
     tiles_seguros = 0
     entidades_seguras = 0
     for tile in tiles:
+        if tile is None:
+            continue
         if not tile.colision or not tile.cuerpo.colliderect(rect):
             tiles_seguros += 1
 
@@ -102,6 +108,8 @@ def posibles_colisiones_jugador(jugador, contexto: ContextoDelJuego):
     entidades_seguras = 0
 
     for tile in tiles:
+        if tile is None:
+            continue
         if not tile.colision or not tile.cuerpo.colliderect(jugador.cuerpo):
             tiles_seguros += 1
 
