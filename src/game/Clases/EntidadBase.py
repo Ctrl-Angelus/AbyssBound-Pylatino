@@ -26,6 +26,14 @@ class EntidadBase:
         self.cuerpo.move_ip(posicion_inicial)
         self.contexto = contexto
 
+        self.vida = 20
+        self.puntos_de_daño = 5
+
+        self.duracion_inmunidad = 500
+        self.inmunidad = False
+        self.inmunidad_inicio = 0
+        self.inmunidad_actual = 0
+
         self.modificador_de_velocidad = 1
         self.direccion = 1
         self.colisiones = True
@@ -57,3 +65,25 @@ class EntidadBase:
         visibilidad_y = self.cuerpo.bottom >= offset_y_inicial and self.cuerpo.top <= offset_y_final
 
         return visibilidad_x and visibilidad_y
+
+    def realizar_daño(self, puntos_de_daño: int):
+        if not self.inmunidad:
+            self.iniciar_inmunidad()
+            self.daño(puntos_de_daño)
+
+        else:
+            self.inmunidad_actual = pygame.time.get_ticks()
+            if self.inmunidad_actual - self.inmunidad_inicio >= self.duracion_inmunidad:
+                self.inmunidad = False
+
+    def daño(self, puntos_de_daño: int):
+        self.vida -= puntos_de_daño
+        if self.vida <= 0:
+            self.morir()
+
+    def iniciar_inmunidad(self):
+        self.inmunidad = True
+        self.inmunidad_inicio = pygame.time.get_ticks()
+
+    def morir(self):
+        pass

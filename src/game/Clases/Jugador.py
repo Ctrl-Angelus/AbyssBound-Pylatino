@@ -30,6 +30,7 @@ class Jugador(EntidadBase):
         self.intangible = False
 
 
+
     def movimiento(self) -> None:
 
         if self.dash_activo:
@@ -53,7 +54,7 @@ class Jugador(EntidadBase):
             if self.dash_activo:
                 colisiones_con_empuje(self, movimiento_x, movimiento_y, self.contexto.entidades)
             else:
-                colisiones(self, movimiento_x, movimiento_y, self.contexto.entidades)
+                colisiones(self, self, movimiento_x, movimiento_y, self.contexto.entidades)
 
 
             tile_actual = self.contexto.escenario.tile_map.obtener_tile_actual(self.cuerpo)
@@ -76,6 +77,7 @@ class Jugador(EntidadBase):
         if not self.dash_activo:
             self.dash_activo = True
             self.inicio_dash = pygame.time.get_ticks()
+            self.iniciar_inmunidad()
 
     def dash(self) -> None:
         momento_actual = pygame.time.get_ticks()
@@ -96,3 +98,7 @@ class Jugador(EntidadBase):
 
     def es_intangible(self) -> bool:
         return self.intangible
+
+    def morir(self):
+        print("Estás muerto")
+        self.contexto.ejecutando = False

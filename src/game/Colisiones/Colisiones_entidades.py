@@ -1,7 +1,7 @@
 from src.game.Gestion.Contexto import ContextoDelJuego
 
 
-def colisiones(entidad, movimiento_x: float, movimiento_y: float, entidades: list):
+def colisiones(entidad, jugador, movimiento_x: float, movimiento_y: float, entidades: list):
 
     entidad.mover(movimiento_x, 0)
 
@@ -23,6 +23,9 @@ def colisiones(entidad, movimiento_x: float, movimiento_y: float, entidades: lis
 
             entidad.mover(correccion_x, 0)
 
+            if entidad_lista is jugador:
+                jugador.realizar_daño(entidad.puntos_de_daño)
+
     entidad.mover(0, movimiento_y)
 
     for entidad_lista in entidades:
@@ -39,6 +42,8 @@ def colisiones(entidad, movimiento_x: float, movimiento_y: float, entidades: lis
                 correccion_y = entidad_lista.cuerpo.bottom - entidad.cuerpo.top
 
             entidad.mover(0, correccion_y)
+            if entidad_lista is jugador:
+                jugador.realizar_daño(entidad.puntos_de_daño)
 
 def colisiones_con_empuje(jugador, movimiento_x: float, movimiento_y: float, entidades: list):
     jugador.mover(movimiento_x, 0)
@@ -61,6 +66,7 @@ def colisiones_con_empuje(jugador, movimiento_x: float, movimiento_y: float, ent
 
             jugador.mover(correccion_x, 0)
             entidad_lista.iniciar_empuje(movimiento_x * 3/4, 0)
+            entidad_lista.realizar_daño(jugador.puntos_de_daño)
 
     jugador.mover(0, movimiento_y)
 
@@ -80,6 +86,7 @@ def colisiones_con_empuje(jugador, movimiento_x: float, movimiento_y: float, ent
             jugador.mover(0, correccion_y)
 
             entidad_lista.iniciar_empuje(0, movimiento_y * 3/4)
+            entidad_lista.realizar_daño(jugador.puntos_de_daño)
 
 
 

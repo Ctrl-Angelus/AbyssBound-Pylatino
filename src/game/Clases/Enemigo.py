@@ -1,5 +1,3 @@
-from typing import Optional
-
 import pygame.time
 
 from src.game.Clases.EntidadBase import EntidadBase
@@ -17,9 +15,9 @@ class Enemigo(EntidadBase):
         self.empuje = False
         self.empuje_x = 0
         self.empuje_y = 0
-        self.empuje_duracion = 500 # milisegundos
-        self.inicio = 0
-        self.ahora = 0
+        self.empuje_duracion = 400 # milisegundos
+        self.empuje_inicio = 0
+        self.empuje_actual = 0
 
     def movimiento(self) -> None:
 
@@ -40,13 +38,13 @@ class Enemigo(EntidadBase):
                 movimiento_y *= self.direccion
 
             movimiento_x, movimiento_y = colision_tiles(self, movimiento_x, movimiento_y, self.contexto)
-            colisiones(self, movimiento_x, movimiento_y, self.contexto.entidades)
+            colisiones(self, self.jugador, movimiento_x, movimiento_y, self.contexto.entidades)
 
     def empujar(self):
         if self.empuje:
-            self.ahora = pygame.time.get_ticks()
+            self.empuje_actual = pygame.time.get_ticks()
 
-            if self.ahora - self.inicio >= self.empuje_duracion:
+            if self.empuje_actual - self.inicio >= self.empuje_duracion:
                 self.empuje = False
                 self.empuje_x = 0
                 self.empuje_y = 0
@@ -57,3 +55,6 @@ class Enemigo(EntidadBase):
             self.inicio = pygame.time.get_ticks()
             self.empuje_x = movimiento_x
             self.empuje_y = movimiento_y
+
+    def morir(self):
+        self.contexto.entidades.remove(self)
