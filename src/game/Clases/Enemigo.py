@@ -2,10 +2,11 @@ import pygame.time
 
 from src.game.Clases.EntidadBase import EntidadBase
 from src.game.Gestion.Contexto import ContextoDelJuego
-from src.game.Gestion.Parametros import DIMENSIONES_DEL_LIENZO
+from src.game.Gestion.Parametros import DIMENSIONES_DEL_LIENZO, MEDIDA_DE_TILE_ORIGINAL
 from src.game.Movimiento.Movimiento import movimiento_relativo
 from src.game.Colisiones.Colisiones_entidades import colisiones
 from src.game.Colisiones.Colisiones_tiles import colisiones_tiles
+from src.game.Sprites.SpriteSheet import SpriteSheet
 
 
 class Enemigo(EntidadBase):
@@ -19,6 +20,18 @@ class Enemigo(EntidadBase):
         self.empuje_duracion = 400 # milisegundos
         self.empuje_inicio = 0
         self.empuje_actual = 0
+
+
+
+        self.spritesheet = SpriteSheet("src/recursos/enemigo-spritesheet.png")
+        self.spritesheet.generar_frames(
+            2,
+            2,
+            (MEDIDA_DE_TILE_ORIGINAL, MEDIDA_DE_TILE_ORIGINAL),
+            (1, 1),
+            1
+        )
+        self.spritesheet.iniciar_animacion()
 
     def movimiento(self) -> None:
 
@@ -70,10 +83,13 @@ class Enemigo(EntidadBase):
         self.contexto.entidades.remove(self)
 
     def mostrar(self):
-        if self.invertido:
-            self.contexto.escena.blit(
-                pygame.transform.flip(self.sprite, True, False),
-                self.obtener_posicion_visual()
-            )
-        else:
-            self.contexto.escena.blit(self.sprite, self.obtener_posicion_visual())
+        if self.entidad_viva:
+            if self.invertido:
+                self.contexto.escena.blit(
+                    pygame.transform.flip(self.spritesheet.obtener_sprite_actual().imagen, True, False),
+                    self.obtener_posicion_visual())
+                self.spritesheet.animacion(self.animacion_actual)
+            else:
+                self.contexto.escena.blit(self.spritesheet.obtener_sprite_actual().imagen,
+                                          self.obtener_posicion_visual())
+                self.spritesheet.animacion(self.animacion_actual)

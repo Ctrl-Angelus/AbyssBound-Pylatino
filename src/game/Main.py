@@ -33,11 +33,13 @@ def main():
             if entidad is jugador:
                 continue
             entidad.movimiento()
+            entidad.actualizar()
 
             if entidad.es_visible():
                 entidad.mostrar()
 
         jugador.mostrar()
+        jugador.actualizar()
 
         contexto.escena.blit(
             contexto.fuente.render(f"Vida: {jugador.vida} / {jugador.vida_total}", True, (255, 255, 255)),

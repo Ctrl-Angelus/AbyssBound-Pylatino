@@ -24,7 +24,7 @@ class Jugador(EntidadBase):
         self.spritesheet = SpriteSheet("src/recursos/jugador-spritesheet.png")
         self.spritesheet.generar_frames(
             2,
-            1,
+            3,
             (MEDIDA_DE_TILE_ORIGINAL, MEDIDA_DE_TILE_ORIGINAL),
             (1, 1),
             1
@@ -37,14 +37,18 @@ class Jugador(EntidadBase):
             "click": pygame.MOUSEBUTTONDOWN
         }
 
+        self.animaciones = {
+            "original": 0,
+            "dash": 1,
+            "daño": 2
+        }
+
         self.dash_activo = False
         self.inicio_dash = 0
         self.duracion_dash = 500 # milisegundos
 
         self.intangible = False
         self.puntos_de_daño = 5
-
-
 
     def movimiento(self) -> None:
 
@@ -94,6 +98,7 @@ class Jugador(EntidadBase):
             self.dash_activo = True
             self.inicio_dash = pygame.time.get_ticks()
             self.iniciar_inmunidad()
+            self.animacion_actual = self.animaciones["dash"]
 
     def dash(self) -> None:
         momento_actual = pygame.time.get_ticks()
@@ -111,6 +116,7 @@ class Jugador(EntidadBase):
         if momento_actual - self.inicio_dash >= self.duracion_dash:
             self.dash_activo = False
             self.modificar_velocidad(1)
+            self.animacion_actual = self.animaciones["original"]
 
     def es_intangible(self) -> bool:
         return self.intangible
@@ -125,7 +131,7 @@ class Jugador(EntidadBase):
                 self.contexto.escena.blit(
                     pygame.transform.flip(self.spritesheet.obtener_sprite_actual().imagen, True, False),
                     self.obtener_posicion_visual())
-                self.spritesheet.animacion(0)
+                self.spritesheet.animacion(self.animacion_actual)
             else:
                 self.contexto.escena.blit(self.spritesheet.obtener_sprite_actual().imagen, self.obtener_posicion_visual())
-                self.spritesheet.animacion(0)
+                self.spritesheet.animacion(self.animacion_actual)

@@ -42,6 +42,13 @@ class EntidadBase:
         self.tiene_movimiento = True
         self.invertido = False
 
+        self.animaciones = {
+            "original": 0,
+            "daño": 1
+        }
+
+        self.animacion_actual = self.animaciones["original"]
+
     def modificar_velocidad(self, factor) -> None:
         self.modificador_de_velocidad = factor
 
@@ -74,20 +81,30 @@ class EntidadBase:
         if not self.inmunidad:
             self.iniciar_inmunidad()
             self.daño(puntos_de_daño)
+            self.animacion_actual = self.animaciones["daño"]
 
         else:
             self.inmunidad_actual = pygame.time.get_ticks()
             if self.inmunidad_actual - self.inmunidad_inicio >= self.duracion_inmunidad:
+                self.animacion_actual = self.animaciones["original"]
                 self.inmunidad = False
 
     def daño(self, puntos_de_daño: int):
         self.vida -= puntos_de_daño
+
         if self.vida <= 0:
             self.morir()
 
     def iniciar_inmunidad(self):
         self.inmunidad = True
         self.inmunidad_inicio = pygame.time.get_ticks()
+
+    def actualizar(self):
+        if self.inmunidad:
+            ahora = pygame.time.get_ticks()
+            if ahora - self.inmunidad_inicio >= self.duracion_inmunidad:
+                self.inmunidad = False
+                self.animacion_actual = 0
 
     def morir(self):
         pass

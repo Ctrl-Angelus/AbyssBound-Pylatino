@@ -8,7 +8,7 @@ from src.game.Sprites.Sprite import Sprite
 
 
 class Tile(Sprite):
-    def __init__(self, ruta: Optional[str], tiles: Optional[tuple], imagen: Optional[Surface], x: int, y: int, contexto, id: str, colision: bool, tiene_accion: bool):
+    def __init__(self, ruta: Optional[str], tiles: Optional[tuple], imagen: Optional[Surface], x: int, y: int, contexto, id: str, colision: bool, tiene_accion: bool, tile_alterno):
         super().__init__(ruta, tiles, imagen)
 
         self.x = x
@@ -22,6 +22,9 @@ class Tile(Sprite):
         self.id = id
         self.colision = colision
         self.tiene_accion = tiene_accion
+
+        self.tile_alterno = tile_alterno
+
 
     def es_visible(self) -> bool:
         offset_x_inicial = self.contexto.offset[0]
@@ -42,6 +45,9 @@ class Tile(Sprite):
     def obtener_posicion(self) -> tuple:
         return self.cuerpo.centerx - self.contexto.offset[0], self.cuerpo.centery - self.contexto.offset[1]
 
+    def cambiar_tile(self):
+        self.imagen = pygame.transform.scale(self.tile_alterno, (self.escalado[0], self.escalado[1]))
+
 class TileConAccion(Tile):
     accionado = False
     duracion = 1000 # milisegundos
@@ -49,16 +55,23 @@ class TileConAccion(Tile):
     ahora = 0
 
     def accionar(self):
-        if not self.accionado:
-            self.accionado = True
-            self.inicio = pygame.time.get_ticks()
-            self.accion()
-        else:
-            self.ahora = pygame.time.get_ticks()
+        if self.tiene_accion:
+            if not self.accionado:
+                self.accionado = True
+                self.inicio = pygame.time.get_ticks()
+                self.accion()
+            else:
+                self.ahora = pygame.time.get_ticks()
 
-            if self.ahora - self.inicio >= self.duracion:
-                self.accionado = False
+                if self.ahora - self.inicio >= self.duracion:
+                    self.accionado = False
 
     def accion(self):
+        pass
+
+class TileCuracion(TileConAccion):
+    def accion(self):
         self.contexto.jugador.vida = self.contexto.jugador.vida_total
+        self.tiene_accion = False
+        self.cambiar_tile()
         print("Curado")
