@@ -23,8 +23,8 @@ class Jugador(EntidadBase):
 
         self.spritesheet = SpriteSheet("src/recursos/jugador-spritesheet.png")
         self.spritesheet.generar_frames(
-            2,
-            3,
+            4,
+            4,
             (MEDIDA_DE_TILE_ORIGINAL, MEDIDA_DE_TILE_ORIGINAL),
             (1, 1),
             1
@@ -40,7 +40,8 @@ class Jugador(EntidadBase):
         self.animaciones = {
             "original": 0,
             "dash": 1,
-            "daño": 2
+            "daño": 2,
+            "muerte": 3
         }
 
         self.dash_activo = False
@@ -50,7 +51,13 @@ class Jugador(EntidadBase):
         self.intangible = False
         self.puntos_de_daño = 5
 
+        self.muerte_duracion = 2000
+        self.muerte_inicio = 0
+        self.muerte_actual = 0
+
     def movimiento(self) -> None:
+        if not self.tiene_movimiento:
+            return
 
         if self.dash_activo:
             self.dash()
@@ -122,16 +129,25 @@ class Jugador(EntidadBase):
         return self.intangible
 
     def morir(self):
-        print("Estás muerto")
-        self.contexto.terminar_game_loop()
+        self.tiene_movimiento = False
+        self.contexto.alternar_movimiento_enemigos()
+        self.entidad_viva = False
+        self.spritesheet.iniciar_animacion()
+        self.animacion_actual = self.animaciones["muerte"]
+        self.muerte_inicio = pygame.time.get_ticks()
 
     def mostrar(self):
-        if self.entidad_viva:
-            if self.invertido:
-                self.contexto.escena.blit(
-                    pygame.transform.flip(self.spritesheet.obtener_sprite_actual().imagen, True, False),
-                    self.obtener_posicion_visual())
-                self.spritesheet.animacion(self.animacion_actual)
-            else:
-                self.contexto.escena.blit(self.spritesheet.obtener_sprite_actual().imagen, self.obtener_posicion_visual())
-                self.spritesheet.animacion(self.animacion_actual)
+        if self.invertido:
+            self.contexto.escena.blit(
+                pygame.transform.flip(self.spritesheet.obtener_sprite_actual().imagen, True, False),
+                self.obtener_posicion_visual())
+            self.spritesheet.animacion(self.animacion_actual)
+        else:
+            self.contexto.escena.blit(self.spritesheet.obtener_sprite_actual().imagen, self.obtener_posicion_visual())
+            self.spritesheet.animacion(self.animacion_actual)
+
+    def actualizar_muerte(self):
+        if not self.entidad_viva:
+            self.muerte_actual = pygame.time.get_ticks()
+            if self.muerte_actual - self.muerte_inicio >= self.muerte_duracion:
+                self.contexto.terminar_game_loop()

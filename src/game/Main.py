@@ -39,6 +39,7 @@ def main():
             if entidad.es_visible():
                 entidad.mostrar()
 
+        jugador.actualizar_muerte()
         jugador.mostrar()
         jugador.actualizar()
 
