@@ -182,8 +182,8 @@ class Jugador(EntidadBase):
             Proyectil(
                 self.contexto,
                 "src/recursos/proyectil.png",
-                MEDIDA_DE_TILE_ESCALADO * 3/4,
-                MEDIDA_DE_TILE_ESCALADO * 3/4,
+                MEDIDA_DE_TILE_ESCALADO / 2,
+                MEDIDA_DE_TILE_ESCALADO / 2,
                 movimiento,
                 (
                     self.cuerpo.x,

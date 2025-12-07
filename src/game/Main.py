@@ -117,12 +117,57 @@ def main():
         contexto.escena.blit(barra_vida_contenido, (barra_vida.get_width() - barra_vida_contenido_original.get_width(), 10))
         contexto.escena.blit(barra_vida, (10, 10))
 
+        enemigos_icono = pygame.image.load("src/recursos/interfaz/enemigo-icono.png")
 
-        contexto.escena.blit(
-            contexto.fuente.render(f"Enemigos: {len(contexto.entidades) - 1}", True, (255, 255, 255)),
-            (10, DIMENSIONES_DEL_LIENZO[1] - contexto.fuente.get_height() - 10)
+        icono_enemigos = pygame.transform.scale(
+            enemigos_icono,
+            (
+                enemigos_icono.get_width() * contexto.fuente.get_height() / enemigos_icono.get_width(),
+                enemigos_icono.get_height() * contexto.fuente.get_height() / enemigos_icono.get_height(),
+            )
         )
 
+        enemigos_cantidad = contexto.fuente.render(f"{len(contexto.entidades) - 1}", True, (255, 255, 255))
+
+        posicion_texto_enemigos = (DIMENSIONES_DEL_LIENZO[0] - enemigos_cantidad.get_width() - 10, 10)
+        contexto.escena.blit(
+            enemigos_cantidad,
+            posicion_texto_enemigos
+        )
+        contexto.escena.blit(
+            icono_enemigos,
+            (
+                posicion_texto_enemigos[0] - icono_enemigos.get_width() - 10,
+                posicion_texto_enemigos[1]
+            )
+        )
+
+        proyectiles = pygame.image.load("src/recursos/proyectil.png")
+        icono_proyectiles = pygame.transform.scale(
+            proyectiles,
+            (
+                proyectiles.get_width() * contexto.fuente.get_height() / proyectiles.get_width(),
+                proyectiles.get_height() * contexto.fuente.get_height() / proyectiles.get_height()
+            )
+        )
+
+        proyectiles_cantidad = contexto.fuente.render(f"{jugador.municion}", True, (255, 255, 255))
+
+        posicion_texto_proyectiles = (
+            DIMENSIONES_DEL_LIENZO[0] - proyectiles_cantidad.get_width() - 10,
+            DIMENSIONES_DEL_LIENZO[1] - proyectiles_cantidad.get_height() - 10
+        )
+        contexto.escena.blit(
+            proyectiles_cantidad,
+            posicion_texto_proyectiles
+        )
+        contexto.escena.blit(
+            icono_proyectiles,
+            (
+                posicion_texto_proyectiles[0] - icono_proyectiles.get_width() - 10,
+                posicion_texto_proyectiles[1]
+            )
+        )
 
         pygame.display.flip()
         contexto.reloj.tick(FPS)
