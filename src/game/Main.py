@@ -15,14 +15,14 @@ def main():
 
     administrador_de_entidades = AdministradorDeEntidades(contexto)
     contexto.administrador_de_entidades = administrador_de_entidades
-    contexto.administrador_de_entidades.generar_oleada(0)
+    contexto.administrador_de_entidades.generar_oleada(10)
     contexto.entidades.append(jugador)
 
     controlador = Controlador(contexto, jugador)
 
-    pygame.mixer.music.load("src/recursos/audio/background.mp3")
+    pygame.mixer.music.load("src/recursos/audio/musica-fondo.mp3")
     pygame.mixer.music.set_volume(0.2)
-    pygame.mixer.music.play()
+    pygame.mixer.music.play(-1)
 
     while contexto.ejecutando:
 
@@ -43,9 +43,14 @@ def main():
             if entidad.es_visible():
                 entidad.mostrar()
 
+
         jugador.actualizar_muerte()
         jugador.mostrar()
         jugador.actualizar()
+
+        for proyectil in contexto.proyectiles:
+            proyectil.mover()
+            proyectil.mostrar()
 
         contexto.escena.blit(
             contexto.fuente.render(f"Vida: {jugador.vida} / {jugador.vida_total}", True, (255, 255, 255)),
@@ -59,9 +64,6 @@ def main():
 
         pygame.display.flip()
         contexto.reloj.tick(FPS)
-
-        if not pygame.mixer.music.get_busy():
-            pygame.mixer.music.rewind()
 
     pygame.quit()
 

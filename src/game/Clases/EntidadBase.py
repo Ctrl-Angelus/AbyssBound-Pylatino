@@ -1,7 +1,9 @@
 import pygame
 from pygame import Rect
-from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, DIMENSIONES_DEL_LIENZO, MEDIDA_DE_TILE_ORIGINAL
+
+from src.game.Gestion.Parametros import DIMENSIONES_DEL_LIENZO, MEDIDA_DE_TILE_ORIGINAL
 from src.game.Gestion.Contexto import ContextoDelJuego
+from src.game.Sonidos import sonido_golpe, sonido_muerte
 from src.game.Sprites.SpriteSheet import SpriteSheet
 
 
@@ -81,11 +83,16 @@ class EntidadBase:
 
     def realizar_daño(self, puntos_de_daño: int):
         if not self.inmunidad:
-            self.iniciar_inmunidad()
-            muerte = self.daño(puntos_de_daño)
-            if muerte:
-                return
-            self.animacion_actual = self.animaciones["daño"]
+            if self.entidad_viva:
+                self.iniciar_inmunidad()
+                muerte = self.daño(puntos_de_daño)
+                if muerte:
+                    sonido_muerte()
+                    return
+
+                sonido_golpe()
+
+                self.animacion_actual = self.animaciones["daño"]
 
         else:
             self.inmunidad_actual = pygame.time.get_ticks()
@@ -96,7 +103,6 @@ class EntidadBase:
 
     def daño(self, puntos_de_daño: int) -> bool:
         self.vida -= puntos_de_daño
-
 
         if self.vida <= 0:
             self.morir()

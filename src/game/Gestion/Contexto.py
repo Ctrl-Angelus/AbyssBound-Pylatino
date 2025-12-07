@@ -19,6 +19,7 @@ class ContextoDelJuego:
 
         self.movimiento_enemigos_activo = True
         self.entidades = []
+        self.proyectiles = []
         pygame.display.set_caption(TITULO)
 
         self.escenario = Escenario(self)

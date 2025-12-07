@@ -1,12 +1,14 @@
 import pygame
 
 from src.game.Clases.EntidadBase import EntidadBase
+from src.game.Clases.Proyectil import Proyectil
 from src.game.Colisiones.Colisiones_entidades import colisiones
 from src.game.Colisiones.Colisiones_tiles import colisiones_tiles
 from src.game.Colisiones.Colisiones_con_empuje import colisiones_con_empuje
 from src.game.Movimiento.Movimiento import movimiento_relativo
 from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD, DIMENSIONES_DEL_LIENZO
 from src.game.Gestion.Contexto import ContextoDelJuego
+from src.game.Sonidos import sonido_dash
 
 
 class Jugador(EntidadBase):
@@ -95,6 +97,7 @@ class Jugador(EntidadBase):
             self.inicio_dash = pygame.time.get_ticks()
             self.iniciar_inmunidad()
             self.animacion_actual = self.animaciones["dash"]
+            sonido_dash()
 
     def dash(self) -> None:
         momento_actual = pygame.time.get_ticks()
@@ -140,3 +143,26 @@ class Jugador(EntidadBase):
             self.muerte_actual = pygame.time.get_ticks()
             if self.muerte_actual - self.muerte_inicio >= self.muerte_duracion:
                 self.contexto.terminar_game_loop()
+
+    def disparar(self):
+        mouse_x_mundo = pygame.mouse.get_pos()[0] + self.contexto.offset[0]
+        mouse_y_mundo = pygame.mouse.get_pos()[1] + self.contexto.offset[1]
+        movimiento = movimiento_relativo(
+            self.velocidad * 2,
+            self.cuerpo.center,
+            (mouse_x_mundo, mouse_y_mundo),
+            None
+        )
+        self.contexto.proyectiles.append(
+            Proyectil(
+                self.contexto,
+                "src/recursos/proyectil.png",
+                MEDIDA_DE_TILE_ESCALADO / 2,
+                MEDIDA_DE_TILE_ESCALADO / 2,
+                movimiento,
+                (
+                    self.cuerpo.x,
+                    self.cuerpo.y
+                )
+            )
+        )

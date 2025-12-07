@@ -27,7 +27,7 @@ class Controlador:
         if evento.type == pygame.MOUSEBUTTONDOWN:
 
             if evento.button == 1:
-                self.contexto.alternar_direccion_enemigos()
+                self.jugador.disparar()
 
             if evento.button == 3:
                 if self.jugador.es_intangible():
