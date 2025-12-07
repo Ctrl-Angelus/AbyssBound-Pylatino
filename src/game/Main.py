@@ -88,9 +88,15 @@ def main():
 
         if contexto.menu_activo:
             contexto.escena.blit(menu, (0, 0))
+            creditos = contexto.fuente.render("Creado por Miguel Ortiz", True, (209, 194, 241))
             texto = contexto.fuente.render("Presione ENTER para Jugar", True, (255, 255, 255))
             contexto.escena.blit(texto, (
                 DIMENSIONES_DEL_LIENZO[0] / 2 - texto.get_width() / 2, DIMENSIONES_DEL_LIENZO[1] * 0.8
+            ))
+            contexto.escena.blit(
+                creditos,
+                (
+                DIMENSIONES_DEL_LIENZO[0] / 2 - creditos.get_width() / 2, DIMENSIONES_DEL_LIENZO[1] * 0.6
             ))
             pygame.display.flip()
             contexto.reloj.tick(FPS)
