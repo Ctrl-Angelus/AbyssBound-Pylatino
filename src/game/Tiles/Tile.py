@@ -4,6 +4,7 @@ import pygame.time
 from pygame import Surface
 
 from src.game.Gestion.Parametros import DIMENSIONES_DEL_LIENZO
+from src.game.Sonidos import sonido_cofre, sonido_salud
 from src.game.Sprites.Sprite import Sprite
 
 
@@ -71,7 +72,19 @@ class TileConAccion(Tile):
 
 class TileCuracion(TileConAccion):
     def accion(self):
+        if self.contexto.jugador.vida == self.contexto.jugador.vida_total:
+            return
         self.contexto.jugador.vida = self.contexto.jugador.vida_total
         self.tiene_accion = False
         self.cambiar_tile()
+        sonido_salud()
         print("Curado")
+
+class TileMunicion(TileConAccion):
+    def accion(self):
+        self.contexto.jugador.municion += 5
+        self.tiene_accion = False
+        self.colision = True
+        self.cambiar_tile()
+        sonido_cofre()
+        print("Recarga")

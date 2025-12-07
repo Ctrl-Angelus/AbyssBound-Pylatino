@@ -26,6 +26,8 @@ class ContextoDelJuego:
         self.administrador_de_entidades = None
         self.jugador = None
 
+        self.puntos = 0
+
     def limpiar_entidades(self):
         self.entidades = []
 

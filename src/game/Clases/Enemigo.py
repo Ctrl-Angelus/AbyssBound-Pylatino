@@ -76,6 +76,7 @@ class Enemigo(EntidadBase):
         self.spritesheet.iniciar_animacion()
         self.animacion_actual = self.animaciones["muerte"]
         self.muerte_inicio = pygame.time.get_ticks()
+        self.contexto.puntos += 1
 
     def mostrar(self):
         if self.invertido:

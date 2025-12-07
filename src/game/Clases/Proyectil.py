@@ -21,6 +21,7 @@ class Proyectil:
         self.contexto = contexto
 
         self.movimiento = movimiento
+        self.puntos_de_daño = 10
 
         self.viva = True
 
@@ -29,6 +30,10 @@ class Proyectil:
             self.movimiento[0],
             self.movimiento[1]
         )
+        tile_actual = self.contexto.escenario.tile_map.obtener_tile_actual(self.cuerpo)
+        if tile_actual is None:
+            self.eliminar()
+
         tiles = self.contexto.escenario.tile_map.obtener_tiles_cercanos(self.cuerpo)
 
         for tile in tiles:
@@ -47,9 +52,8 @@ class Proyectil:
 
             if collide:
                 if entidad.entidad_viva:
-                    entidad.iniciar_empuje(self.movimiento[0] / 2, self.movimiento[1] / 2)
-                    entidad.realizar_daño(5)
-                    self.eliminar()
+                    entidad.iniciar_empuje(self.movimiento[0], self.movimiento[1])
+                    entidad.realizar_daño(self.puntos_de_daño)
 
     def mostrar(self):
         if self.viva:

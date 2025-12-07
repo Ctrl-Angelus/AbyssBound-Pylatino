@@ -102,25 +102,22 @@ class Jugador(EntidadBase):
             self.inicio_dash = pygame.time.get_ticks()
             self.iniciar_inmunidad()
             self.animacion_actual = self.animaciones["dash"]
+            self.modificar_velocidad(3)
             sonido_dash()
 
     def dash(self) -> None:
         momento_actual = pygame.time.get_ticks()
-        self.modificar_velocidad(3)
-
-        if momento_actual - self.inicio_dash >= self.duracion_dash * 0.75:
-            self.modificar_velocidad(1.75)
-
-        if momento_actual - self.inicio_dash >= self.duracion_dash * 0.5:
-            self.modificar_velocidad(1.5)
-
-        if momento_actual - self.inicio_dash >= self.duracion_dash * 0.25:
-            self.modificar_velocidad(1.25)
 
         if momento_actual - self.inicio_dash >= self.duracion_dash:
             self.dash_activo = False
             self.modificar_velocidad(1)
             self.animacion_actual = self.animaciones["original"]
+        elif momento_actual - self.inicio_dash >= self.duracion_dash * 0.25:
+            self.modificar_velocidad(1.25)
+        elif momento_actual - self.inicio_dash >= self.duracion_dash * 0.5:
+            self.modificar_velocidad(1.5)
+        elif momento_actual - self.inicio_dash >= self.duracion_dash * 0.75:
+            self.modificar_velocidad(1.75)
 
     def es_intangible(self) -> bool:
         return self.intangible
@@ -185,8 +182,8 @@ class Jugador(EntidadBase):
             Proyectil(
                 self.contexto,
                 "src/recursos/proyectil.png",
-                MEDIDA_DE_TILE_ESCALADO / 2,
-                MEDIDA_DE_TILE_ESCALADO / 2,
+                MEDIDA_DE_TILE_ESCALADO * 3/4,
+                MEDIDA_DE_TILE_ESCALADO * 3/4,
                 movimiento,
                 (
                     self.cuerpo.x,

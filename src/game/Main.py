@@ -1,3 +1,5 @@
+from os import write
+
 import pygame
 
 from src.game.Gestion.AdministradorDeEntidades import AdministradorDeEntidades
@@ -71,6 +73,7 @@ def main():
         pygame.display.flip()
         contexto.reloj.tick(FPS)
 
+    open("src/recursos/estadisticas/estadisticas.txt", "w")
     pygame.quit()
 
 
