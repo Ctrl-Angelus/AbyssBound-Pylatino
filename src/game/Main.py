@@ -21,8 +21,8 @@ def main():
     controlador = Controlador(contexto, jugador)
 
     pygame.mixer.music.load("src/recursos/audio/musica-fondo.mp3")
-    pygame.mixer.music.set_volume(0.2)
-    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.1)
+    pygame.mixer.music.play(-1, 0.0)
 
     menu_original = pygame.image.load("src/recursos/menu.png")
 
@@ -31,6 +31,16 @@ def main():
         (
             menu_original.get_width() * DIMENSIONES_DEL_LIENZO[0] / menu_original.get_width(),
             menu_original.get_height() * DIMENSIONES_DEL_LIENZO[1] / menu_original.get_height()
+        )
+    )
+
+    instrucciones_originales = pygame.image.load("src/recursos/instrucciones.png")
+
+    instrucciones = pygame.transform.scale(
+        instrucciones_originales,
+        (
+            instrucciones_originales.get_width() * DIMENSIONES_DEL_LIENZO[0] / instrucciones_originales.get_width(),
+            instrucciones_originales.get_height() * DIMENSIONES_DEL_LIENZO[1] / instrucciones_originales.get_height()
         )
     )
 
@@ -66,6 +76,26 @@ def main():
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_RETURN:
                         contexto.menu_activo = False
+                        contexto.instrucciones_activas = True
+
+
+            continue
+
+        elif contexto.instrucciones_activas:
+            contexto.escena.blit(instrucciones, (0, 0))
+            texto = contexto.fuente.render("Presione ENTER para continuar", True, (255, 255, 255))
+            contexto.escena.blit(texto, (
+                DIMENSIONES_DEL_LIENZO[0] / 2 - texto.get_width() / 2, DIMENSIONES_DEL_LIENZO[1] * 0.9
+            ))
+            pygame.display.flip()
+            contexto.reloj.tick(FPS)
+
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    contexto.terminar_game_loop()
+                if evento.type == pygame.KEYDOWN:
+                    if evento.key == pygame.K_RETURN:
+                        contexto.instrucciones_activas = False
 
 
             continue
