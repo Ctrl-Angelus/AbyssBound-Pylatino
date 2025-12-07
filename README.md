@@ -1,4 +1,4 @@
-<img src="src/recursos/portada.png" alt="portada" align="center">
+<img src="src/recursos/interfaz/portada.png" alt="portada" align="center">
 
 # Proyecto final Pylatino 25
 

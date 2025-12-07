@@ -7,7 +7,10 @@ from src.game.Gestion.Controlador import Controlador
 from src.game.Gestion.Parametros import FPS, DIMENSIONES_DEL_LIENZO
 
 
+
 def main():
+    enemigos_iniciales = 20
+    cantidad_de_enemigos = enemigos_iniciales
     contexto = ContextoDelJuego()
 
     jugador = Jugador(contexto)
@@ -15,7 +18,7 @@ def main():
 
     administrador_de_entidades = AdministradorDeEntidades(contexto)
     contexto.administrador_de_entidades = administrador_de_entidades
-    contexto.administrador_de_entidades.generar_oleada(50)
+    contexto.administrador_de_entidades.generar_oleada(cantidad_de_enemigos)
     contexto.entidades.append(jugador)
 
     controlador = Controlador(contexto, jugador)
@@ -24,7 +27,7 @@ def main():
     pygame.mixer.music.set_volume(0.1)
     pygame.mixer.music.play(-1, 0.0)
 
-    menu_original = pygame.image.load("src/recursos/menu.png")
+    menu_original = pygame.image.load("src/recursos/interfaz/menu.png")
 
     menu = pygame.transform.scale(
         menu_original,
@@ -34,7 +37,7 @@ def main():
         )
     )
 
-    instrucciones_originales = pygame.image.load("src/recursos/instrucciones.png")
+    instrucciones_originales = pygame.image.load("src/recursos/interfaz/instrucciones.png")
 
     instrucciones = pygame.transform.scale(
         instrucciones_originales,
@@ -52,10 +55,12 @@ def main():
 
             jugador = Jugador(contexto)
             contexto.jugador = jugador
+            if cantidad_de_enemigos <= 45:
+                cantidad_de_enemigos += 5
 
             administrador_de_entidades = AdministradorDeEntidades(contexto)
             contexto.administrador_de_entidades = administrador_de_entidades
-            contexto.administrador_de_entidades.generar_oleada(10)
+            contexto.administrador_de_entidades.generar_oleada(cantidad_de_enemigos)
             contexto.entidades.append(jugador)
 
             controlador = Controlador(contexto, jugador)
@@ -216,7 +221,6 @@ def main():
         pygame.display.flip()
         contexto.reloj.tick(FPS)
 
-    open("src/recursos/estadisticas/estadisticas.txt", "w")
     pygame.quit()
 
 

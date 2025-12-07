@@ -26,4 +26,3 @@ MEDIDA_DE_TILE_ORIGINAL = 16 # Cada Tile mide 16x16 pixeles
 MEDIDA_DE_TILE_ESCALADO: float = ALTO_DE_LA_VENTANA / CANTIDAD_DE_TILES # Se divide el tamaño de la ventana entre la cantidad de tiles
 
 VELOCIDAD: float = (10 * MEDIDA_DE_TILE_ESCALADO) / FPS # La velocidad son la cantidad de tiles que se mueve el personaje entre los fps cada segundo
-

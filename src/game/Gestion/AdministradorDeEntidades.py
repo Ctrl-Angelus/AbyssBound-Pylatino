@@ -1,11 +1,12 @@
 import random
+from math import sqrt
 
 from pygame import Rect
 
 from src.game.Clases.Enemigo import Enemigo
 from src.game.Colisiones.Posibles_colisiones import posibles_colisiones
 from src.game.Gestion.Contexto import ContextoDelJuego
-from src.game.Gestion.Parametros import VELOCIDAD, MEDIDA_DE_TILE_ESCALADO
+from src.game.Gestion.Parametros import VELOCIDAD, MEDIDA_DE_TILE_ESCALADO, DIMENSIONES_DEL_LIENZO
 
 
 class AdministradorDeEntidades:
@@ -20,6 +21,11 @@ class AdministradorDeEntidades:
 
                 x_aleatoria = self.generar_x_aleatoria()
                 y_aleatoria = self.generar_y_aleatoria()
+
+                distancia = sqrt((x_aleatoria - self.contexto.jugador.cuerpo.centerx)**2 + (y_aleatoria - self.contexto.jugador.cuerpo.centery)**2)
+
+                if distancia < DIMENSIONES_DEL_LIENZO[0]:
+                    continue
 
                 posible_cuerpo = Rect(x_aleatoria, y_aleatoria, MEDIDA_DE_TILE_ESCALADO, MEDIDA_DE_TILE_ESCALADO)
 
