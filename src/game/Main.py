@@ -47,6 +47,26 @@ def main():
         )
     )
 
+    pantalla_muerte = pygame.image.load("src/recursos/interfaz/pantalla-muerte.png")
+
+    muerte = pygame.transform.scale(
+        pantalla_muerte,
+        (
+            pantalla_muerte.get_width() * DIMENSIONES_DEL_LIENZO[0] / pantalla_muerte.get_width(),
+            pantalla_muerte.get_height() * DIMENSIONES_DEL_LIENZO[1] / pantalla_muerte.get_height()
+        )
+    )
+
+    finalizado = pygame.image.load("src/recursos/interfaz/ronda-completada.png")
+
+    ronda_finalizada = pygame.transform.scale(
+        finalizado,
+        (
+            finalizado.get_width() * DIMENSIONES_DEL_LIENZO[0] / finalizado.get_width(),
+            finalizado.get_height() * DIMENSIONES_DEL_LIENZO[1] / finalizado.get_height()
+        )
+    )
+
 
     while contexto.ejecutando:
 
@@ -68,7 +88,7 @@ def main():
 
         if contexto.menu_activo:
             contexto.escena.blit(menu, (0, 0))
-            texto = contexto.fuente.render("Presione ENTER para continuar", True, (255, 255, 255))
+            texto = contexto.fuente.render("Presione ENTER para Jugar", True, (255, 255, 255))
             contexto.escena.blit(texto, (
                 DIMENSIONES_DEL_LIENZO[0] / 2 - texto.get_width() / 2, DIMENSIONES_DEL_LIENZO[1] * 0.8
             ))
@@ -101,6 +121,48 @@ def main():
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_RETURN:
                         contexto.instrucciones_activas = False
+
+
+            continue
+
+        elif contexto.pantalla_final:
+            contexto.escena.blit(ronda_finalizada, (0, 0))
+            texto = contexto.fuente.render("Presione ENTER para ir al Menú", True, (255, 255, 255))
+            contexto.escena.blit(texto, (
+                DIMENSIONES_DEL_LIENZO[0] / 2 - texto.get_width() / 2, DIMENSIONES_DEL_LIENZO[1] * 0.9
+            ))
+            pygame.display.flip()
+            contexto.reloj.tick(FPS)
+
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    contexto.terminar_game_loop()
+                if evento.type == pygame.KEYDOWN:
+                    if evento.key == pygame.K_RETURN:
+                        contexto.pantalla_final = False
+                        contexto.menu_activo = True
+                        contexto.reiniciar = True
+
+
+            continue
+
+        elif contexto.pantalla_muerte:
+            contexto.escena.blit(muerte, (0, 0))
+            texto = contexto.fuente.render("Presione ENTER para ir al Menú", True, (255, 255, 255))
+            contexto.escena.blit(texto, (
+                DIMENSIONES_DEL_LIENZO[0] / 2 - texto.get_width() / 2, DIMENSIONES_DEL_LIENZO[1] * 0.9
+            ))
+            pygame.display.flip()
+            contexto.reloj.tick(FPS)
+
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    contexto.terminar_game_loop()
+                if evento.type == pygame.KEYDOWN:
+                    if evento.key == pygame.K_RETURN:
+                        contexto.pantalla_muerte = False
+                        contexto.menu_activo = True
+                        contexto.reiniciar = True
 
 
             continue
@@ -217,6 +279,9 @@ def main():
                 posicion_texto_proyectiles[1]
             )
         )
+
+        if len(contexto.entidades) - 1 == 0:
+            contexto.pantalla_final = True
 
         pygame.display.flip()
         contexto.reloj.tick(FPS)

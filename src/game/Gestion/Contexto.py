@@ -12,6 +12,8 @@ class ContextoDelJuego:
         self.ejecutando = True
         self.menu_activo = True
         self.instrucciones_activas = False
+        self.pantalla_muerte = False
+        self.pantalla_final = False
         self.reiniciar = False
         self.offset = [0, 0]
 
