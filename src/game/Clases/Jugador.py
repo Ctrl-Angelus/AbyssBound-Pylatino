@@ -8,7 +8,7 @@ from src.game.Colisiones.Colisiones_con_empuje import colisiones_con_empuje
 from src.game.Movimiento.Movimiento import movimiento_relativo
 from src.game.Gestion.Parametros import MEDIDA_DE_TILE_ESCALADO, VELOCIDAD, DIMENSIONES_DEL_LIENZO
 from src.game.Gestion.Contexto import ContextoDelJuego
-from src.game.Sonidos import sonido_dash
+from src.game.Sonidos import sonido_dash, sonido_proyectil
 
 
 class Jugador(EntidadBase):
@@ -38,9 +38,14 @@ class Jugador(EntidadBase):
         self.dash_activo = False
         self.inicio_dash = 0
         self.duracion_dash = 500 # milisegundos
+        self.duracion_disparo = 1000
+        self.inicio_disparo = 0
+        self.disparo_actual = 0
+        self.disparo = False
 
         self.intangible = False
         self.puntos_de_daño = 5
+        self.municion = 20
 
         self.muerte_duracion = 2000
         self.muerte_inicio = 0
@@ -145,6 +150,29 @@ class Jugador(EntidadBase):
                 self.contexto.terminar_game_loop()
 
     def disparar(self):
+        if self.municion <= 0:
+            return
+
+        if not self.disparo:
+            self.inicio_disparo = pygame.time.get_ticks()
+            self.disparo = True
+            self.generar_proyectil()
+
+        else:
+            self.disparo_actual = pygame.time.get_ticks()
+
+            if self.disparo_actual - self.inicio_disparo >= self.duracion_disparo:
+                self.disparo = False
+
+    def actualizar_disparo(self):
+        if self.disparo:
+
+            self.disparo_actual = pygame.time.get_ticks()
+
+            if self.disparo_actual - self.inicio_disparo >= self.duracion_disparo:
+                self.disparo = False
+
+    def generar_proyectil(self):
         mouse_x_mundo = pygame.mouse.get_pos()[0] + self.contexto.offset[0]
         mouse_y_mundo = pygame.mouse.get_pos()[1] + self.contexto.offset[1]
         movimiento = movimiento_relativo(
@@ -166,3 +194,5 @@ class Jugador(EntidadBase):
                 )
             )
         )
+        sonido_proyectil()
+        self.municion -= 1

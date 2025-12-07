@@ -1,7 +1,6 @@
 import pygame.image
 
 from src.game.Gestion.Contexto import ContextoDelJuego
-from src.game.Sonidos import sonido_choque_proyectil
 
 
 class Proyectil:
@@ -59,7 +58,6 @@ class Proyectil:
             self.contexto.proyectiles.remove(self)
 
     def eliminar(self):
-        sonido_choque_proyectil()
         self.viva = False
 
     def obtener_posicion_visual(self) -> tuple:

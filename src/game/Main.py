@@ -21,7 +21,7 @@ def main():
     controlador = Controlador(contexto, jugador)
 
     pygame.mixer.music.load("src/recursos/audio/musica-fondo.mp3")
-    pygame.mixer.music.set_volume(0.2)
+    pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 
     while contexto.ejecutando:
@@ -47,6 +47,7 @@ def main():
         jugador.actualizar_muerte()
         jugador.mostrar()
         jugador.actualizar()
+        jugador.actualizar_disparo()
 
         for proyectil in contexto.proyectiles:
             proyectil.mover()
@@ -59,6 +60,11 @@ def main():
         contexto.escena.blit(
             contexto.fuente.render(f"Enemigos: {len(contexto.entidades) - 1}", True, (255, 255, 255)),
             (10, DIMENSIONES_DEL_LIENZO[1] - contexto.fuente.get_height() - 10)
+        )
+        texto = contexto.fuente.render(f"Proyectiles: {jugador.municion}", True, (255, 255, 255))
+        contexto.escena.blit(
+            texto,
+            (DIMENSIONES_DEL_LIENZO[0] - texto.get_width() - 10, DIMENSIONES_DEL_LIENZO[1] - texto.get_height() - 10)
         )
 
 
